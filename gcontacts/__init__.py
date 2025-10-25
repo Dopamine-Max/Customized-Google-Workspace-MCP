@@ -1,0 +1,1 @@
+# This file marks the 'gpeople' directory as a Python package.
