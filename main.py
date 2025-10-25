@@ -80,7 +80,7 @@ def main():
                         help='Specify which tools to register. If not provided, all tools are registered.')
     parser.add_argument('--tool-tier', choices=['core', 'extended', 'complete'],
                         help='Load tools based on tier level. Can be combined with --tools to filter services.')
-    parser.add_argument('--transport', choices=['stdio', 'streamable-http'], default='stdio',
+    parser.add_argument('--transport', choices=['stdio', 'streamable-http'], default='streamable-http',
                         help='Transport mode: stdio (default) or streamable-http')
     args = parser.parse_args()
 
