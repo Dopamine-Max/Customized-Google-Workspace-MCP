@@ -1,4 +1,4 @@
-name: Ping Server
+name: Ping Server MCP
 
 on:
   schedule:
