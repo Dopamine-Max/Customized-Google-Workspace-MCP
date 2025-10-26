@@ -21,7 +21,6 @@ def enforce_fastmcp_cloud_defaults():
 
     required = {
         "MCP_ENABLE_OAUTH21": "true",
-        "WORKSPACE_MCP_STATELESS_MODE": "true",
     }
     defaults = {
         "MCP_SINGLE_USER_MODE": "false",
@@ -135,4 +134,4 @@ configure_server_for_http()
 
 # Export server instance for FastMCP CLI (looks for 'mcp', 'server', or 'app')
 mcp = server
-app = server
+app = server.streamable_http_app()
