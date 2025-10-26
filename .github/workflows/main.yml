@@ -9,21 +9,16 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Ping the server
+      - name: Ping the API
         run: |
-          SERVER_HOST="https://agentsync-google-workspace-mcp.onrender.com"
-          PING_COUNT=4 # Number of ping packets
-
-          echo "Pinging ${SERVER_HOST}..."
-          ping -c ${PING_COUNT} ${SERVER_HOST}
-
-          # Optional: Check exit code for success/failure
-          if [ $? -eq 0 ]; then
-            echo "Server ${SERVER_HOST} is reachable."
-          else
-            echo "Server ${SERVER_HOST} is NOT reachable."
-            exit 1 # Fail the job if the server is unreachable
-          fi
+          SERVER_URL="https://agentsync-google-workspace-mcp.onrender.com/"
+          
+          echo "Pinging ${SERVER_URL} at $(date)"
+          
+          # Simple curl request - don't fail the workflow if server is down
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 ${SERVER_URL}) || true
+          
+          echo "Response: HTTP ${HTTP_CODE}"
+          
+          # Always succeed so the workflow keeps running on schedule
+          exit 0
