@@ -1,0 +1,29 @@
+name: Ping Server
+
+on:
+  schedule:
+    - cron: '*/14 * * * *' # Runs every 14 minutes
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ping the server
+        run: |
+          SERVER_HOST="https://agentsync-google-workspace-mcp.onrender.com"
+          PING_COUNT=4 # Number of ping packets
+
+          echo "Pinging ${SERVER_HOST}..."
+          ping -c ${PING_COUNT} ${SERVER_HOST}
+
+          # Optional: Check exit code for success/failure
+          if [ $? -eq 0 ]; then
+            echo "Server ${SERVER_HOST} is reachable."
+          else
+            echo "Server ${SERVER_HOST} is NOT reachable."
+            exit 1 # Fail the job if the server is unreachable
+          fi
