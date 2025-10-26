@@ -134,6 +134,24 @@ async def health_check(request: Request):
         "transport": get_transport_mode()
     })
 
+@server.custom_route("/", methods=["GET", "HEAD"])
+async def root_health_check(request: Request):
+    """Root path health check for Render.com and other hosting platforms."""
+    try:
+        version = metadata.version("workspace-mcp")
+    except metadata.PackageNotFoundError:
+        version = "dev"
+    
+    if request.method == "HEAD":
+        return JSONResponse({"status": "ok"}, status_code=200)
+    
+    return JSONResponse({
+        "status": "healthy",
+        "service": "workspace-mcp",
+        "version": version,
+        "transport": get_transport_mode()
+    })
+
 async def legacy_oauth2_callback(request: Request) -> HTMLResponse:
     state = request.query_params.get("state")
     code = request.query_params.get("code")
