@@ -331,6 +331,11 @@ async def get_events(
         )
         items = [event]
     else:
+        # Handle 'now' as a special value for time_min
+        if time_min and time_min.lower() == 'now':
+            logger.info("[get_events] 'time_min' is 'now', setting to None to use current time.")
+            time_min = None
+
         # Handle multiple events retrieval with time filtering
         # Ensure time_min and time_max are correctly formatted for the API
         formatted_time_min = _correct_time_format_for_api(time_min, "time_min")
@@ -564,7 +569,7 @@ async def create_event(
         
         event_body["reminders"] = reminder_data
 
-    # Handle transparency validation
+    # Handle transparency
     _apply_transparency_if_valid(event_body, transparency, "create_event")
 
     if add_google_meet:
